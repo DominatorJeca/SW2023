@@ -3,9 +3,9 @@ import {ICashFlow, CashFlow} from '@libs/CashFlow';
 const router  = Router();
 const cashFlowInstance = new CashFlow();
 
-router.get('/', async (_req, res)=>{
+/*router.get('/', async (_req, res)=>{
     res.json( await cashFlowInstance.getAllCashFlowItems());
-});
+});*/
 
 router.get('/byIndex/:index', (req, res) => 
 {

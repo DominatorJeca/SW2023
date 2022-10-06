@@ -19,7 +19,7 @@ export abstract class AbstractDao<T extends any> implements IDaoObject{
         return datos;
     }
     public async findById(identifier: Partial<T>): Promise<T>{
-        const {columns, values, params}= this.getColValParmArr(identifier);
+        const {columns, values, params:_params}= this.getColValParmArr(identifier);
         const sqlSelect= `SELECT * FROM ${this.persistanceName} WHERE ${columns.map(o=>`${o}=?`).join(' and ')}`;
         const dato= await this.connection.get(sqlSelect, values);
         return dato;
@@ -39,7 +39,7 @@ export abstract class AbstractDao<T extends any> implements IDaoObject{
     }
     public async update(identifier: Partial<T>, data: Partial<T>): Promise<boolean>{
         const {columns, values, params:_params}= this.getColValParmArr(data);
-        const {columns:columnsId, values:valuesId, params:paramsId}= this.getColValParmArr(identifier);
+        const {columns:columnsId, values:valuesId, params:_paramsId}= this.getColValParmArr(identifier);
         const finalValues= [...values, ...valuesId];
         const sqlUpdate= `UPDATE ${this.persistanceName} SET ${columns.map((o)=>`${o}=?`).join('')} WHERE ${columnsId.map((o)=>`${o}=?`).join('')}`;
         await this.connection.exec(sqlUpdate, finalValues);

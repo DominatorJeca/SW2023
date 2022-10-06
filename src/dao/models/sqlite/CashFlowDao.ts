@@ -2,7 +2,7 @@ import { ICashFlow} from "../entities/CashFlow";
 import { AbstractDao } from "./AbstractDao";
 import sqlite from 'sqlite';
 
-export class ClashFlowDao extends AbstractDao<ICashFlow>{
+export class CashFlowDao extends AbstractDao<ICashFlow>{
 
     public constructor(db:unknown){
         super('CASHFLOW', db as sqlite.Database );
@@ -12,9 +12,19 @@ export class ClashFlowDao extends AbstractDao<ICashFlow>{
         super.findAll()
     }
 
+    public async getCashFlowById(identifier: Partial<ICashFlow>){
+        try {
+            const result = await super.findById(identifier);
+            return result;
+        }catch (ex: unknown){
+            throw ex;
+        }
+    }
+
     public async insertNewCashFlow( newCashFlow: ICashFlow ){
         try{
             const result = await super.createOne(newCashFlow);
+            return result;
         }catch(ex: unknown){
             console.log("CashflowDao sqlite:", (ex as Error).message);
             throw ex;
