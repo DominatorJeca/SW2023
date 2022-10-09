@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import CashFlowRouter from './CashFlows';
+import CashFlowRouter from './Usuarios';
 const router  = Router();
 
 router.use('/cashFlow', CashFlowRouter);
