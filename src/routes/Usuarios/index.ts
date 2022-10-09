@@ -1,31 +1,29 @@
 import Router from 'express';
-import {ICashFlow, CashFlow} from '@libs/CashFlow';
+import {IUsuario, Usuario} from '@server/libs/Usuarios';
 const router  = Router();
-const cashFlowInstance = new CashFlow();
+const usuarioInstance = new Usuario();
 
-/*router.get('/', async (_req, res)=>{
-    res.json( await cashFlowInstance.getAllCashFlowItems());
-});*/
+router.get('/', async (_req, res)=>{
+    res.json( await usuarioInstance.getAllUsuarioItems);
+});
 
 router.get('/byIndex/:index', (req, res) => 
 {
     try {
         const{index} = req.params as unknown as {index: number};
-        res.json(cashFlowInstance.getCashFlowByIndex(index));
+        res.json(usuarioInstance.getUsuarioByIndex(index));
     }catch(error){
         console.log(error);
         res.status(500).json({'msg':'Error'});
     }
 });
-router.get('/', async (_req, res) => {
-  res.json({msg:'Hello World!'});
- });
+
 
  router.post('/new', (req, res) => {
    try {
-    const newCashFlow=req.body as unknown as ICashFlow;
-    const newCashFlowIndex= cashFlowInstance.addCashFlow(newCashFlow);
-    res.json({newIndex:newCashFlowIndex});
+    const newUsuario=req.body as unknown as IUsuario;
+    const newUsuarioIndex= usuarioInstance.addUsuario(newUsuario);
+    res.json({newIndex:newUsuarioIndex});
    }catch (error) {
     res.status(500).json({error: (error as Error).message});
    }
@@ -34,10 +32,10 @@ router.get('/', async (_req, res) => {
  router.put('/update/:index', (req, res) => {
     try{
         const { index = -1}= req.params as unknown as {index?:number};
-        const CashFlowForm= req.body as unknown as ICashFlow;
-        const cashFlowUpdate = Object.assign(cashFlowInstance.getCashFlowByIndex(index), CashFlowForm);
-        if(cashFlowInstance.updateCashFlow(index, cashFlowUpdate)){
-            res.json(cashFlowUpdate);
+        const UsuarioForm= req.body as unknown as IUsuario;
+        const usuarioUpdate = Object.assign(usuarioInstance.getUsuarioByIndex(index), UsuarioForm);
+        if(usuarioInstance.updateUsuario(index, usuarioUpdate)){
+            res.json(usuarioUpdate);
         }else{
             res.status(500).json({"msg":"Update not possible"})
         }
@@ -49,7 +47,7 @@ router.get('/', async (_req, res) => {
  router.delete('/delete:index', (req, res) =>{
     try {
         const{index} = req.params as unknown as {index: number};
-        if(cashFlowInstance.deleteCashFlow(index)){
+        if(usuarioInstance.deleteUsuario(index)){
             res.status(200).json({"msg":"Success"});
         }else{
             res.status(500).json({});
